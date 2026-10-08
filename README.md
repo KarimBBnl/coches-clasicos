@@ -24,7 +24,7 @@ Configura estas variables de entorno en Lambda:
 - `TABLE_NAME`: nombre de la tabla propia de consultas, con partition key `id` de tipo String.
 - `TOPIC_ARN`: ARN del topic SNS propio de Car Classic San Valero.
 
-El Execution Role de Lambda necesita `dynamodb:PutItem` en esa tabla y `sns:Publish` en ese topic. La prueba proxy está en `lambda/test-event.json`. El navegador no debe conectarse a esta Lambda hasta configurar API Gateway, CORS y la URL propia en `js/app.js`.
+El Execution Role de Lambda necesita `dynamodb:PutItem` en esa tabla y `sns:Publish` en ese topic. La política de mínimo privilegio para el role está en `lambda/execution-role-policy.json`. La prueba proxy está en `lambda/test-event.json`. El navegador no debe conectarse a esta Lambda hasta configurar API Gateway, CORS y la URL propia en `js/app.js`.
 
 ## Desarrollo local
 

@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "WriteCarClassicMessages",
+      "Effect": "Allow",
+      "Action": "dynamodb:PutItem",
+      "Resource": "arn:aws:dynamodb:us-east-1:931774569015:table/CarClassicMessages"
+    },
+    {
+      "Sid": "PublishCarClassicRequests",
+      "Effect": "Allow",
+      "Action": "sns:Publish",
+      "Resource": "arn:aws:sns:us-east-1:931774569015:CarClassicRequests"
+    }
+  ]
+}
