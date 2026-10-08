@@ -15,6 +15,12 @@ GitHub Pages y Amazon S3 publicarán la web estática. Para las consultas se cre
 
 `Navegador → API Gateway → Lambda → DynamoDB + SNS`
 
+## Bloque 03 · primera Lambda
+
+La función propia se llama `carclassic-contact`. El código de inicio está en `lambda/index.mjs`; configúrala con el handler `index.handler` y crea un evento de prueba a partir de `lambda/test-event.json`.
+
+Esta primera versión solo valida la invocación y devuelve un saludo. DynamoDB, SNS y API Gateway se integrarán en sus bloques correspondientes.
+
 ## Desarrollo local
 
 Abre `index.html` en un navegador. Hasta configurar y desplegar la API propia, el formulario validará los datos y avisará claramente que no los ha enviado.
