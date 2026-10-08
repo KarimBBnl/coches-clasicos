@@ -15,11 +15,16 @@ GitHub Pages y Amazon S3 publicarán la web estática. Para las consultas se cre
 
 `Navegador → API Gateway → Lambda → DynamoDB + SNS`
 
-## Bloque 03 · primera Lambda
+## Backend · Lambda final
 
-La función propia se llama `carclassic-contact`. El código de inicio está en `lambda/index.mjs`; configúrala con el handler `index.handler` y crea un evento de prueba a partir de `lambda/test-event.json`.
+La función propia se llama `carclassic-contact`. El handler definitivo está en `lambda/index.mjs` y usa `index.handler`. Procesa peticiones proxy de API Gateway, valida la consulta, la guarda en DynamoDB y publica una notificación en SNS.
 
-Esta primera versión solo valida la invocación y devuelve un saludo. DynamoDB, SNS y API Gateway se integrarán en sus bloques correspondientes.
+Configura estas variables de entorno en Lambda:
+
+- `TABLE_NAME`: nombre de la tabla propia de consultas, con partition key `id` de tipo String.
+- `TOPIC_ARN`: ARN del topic SNS propio de Car Classic San Valero.
+
+El Execution Role de Lambda necesita `dynamodb:PutItem` en esa tabla y `sns:Publish` en ese topic. La prueba proxy está en `lambda/test-event.json`. El navegador no debe conectarse a esta Lambda hasta configurar API Gateway, CORS y la URL propia en `js/app.js`.
 
 ## Desarrollo local
 

@@ -1,3 +1,5 @@
 {
-  "nombre": "Karim"
+  "httpMethod": "POST",
+  "isBase64Encoded": false,
+  "body": "{\"name\":\"Karim\",\"email\":\"karim@example.com\",\"phone\":\"+34 600 000 000\",\"message\":\"Quiero información sobre la exposición de coches clásicos.\"}"
 }
