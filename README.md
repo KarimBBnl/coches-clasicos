@@ -6,12 +6,12 @@ Proyecto final Serverless para presentar una exposición de coches clásicos y r
 
 - Sitio estático inicial en `index.html`, con JavaScript en `js/app.js` e imágenes locales en `assets/`.
 - El formulario requiere `name`, `email` y `message`; permite `phone` opcional y adjunta el vehículo seleccionado.
-- El endpoint está pendiente. Se configurará en `js/app.js` cuando exista la API propia de este proyecto.
+- El formulario envía consultas a la API Gateway propia desplegada en `us-east-1`.
 - No utilizar los recursos AWS del proyecto Ebook.
 
-## Arquitectura prevista
+## Arquitectura
 
-GitHub Pages y Amazon S3 publicarán la web estática. Para las consultas se crearán recursos propios:
+GitHub Pages y Amazon S3 publican la web estática. Las consultas usan recursos propios:
 
 `Navegador → API Gateway → Lambda → DynamoDB + SNS`
 
@@ -24,8 +24,8 @@ Configura estas variables de entorno en Lambda:
 - `TABLE_NAME`: nombre de la tabla propia de consultas, con partition key `id` de tipo String.
 - `TOPIC_ARN`: ARN del topic SNS propio de Car Classic San Valero.
 
-El Execution Role de Lambda necesita `dynamodb:PutItem` en esa tabla y `sns:Publish` en ese topic. La política de mínimo privilegio para el role está en `lambda/execution-role-policy.json`. La prueba proxy está en `lambda/test-event.json`. El navegador no debe conectarse a esta Lambda hasta configurar API Gateway, CORS y la URL propia en `js/app.js`.
+El Execution Role de Lambda necesita `dynamodb:PutItem` en esa tabla y `sns:Publish` en ese topic. La política de mínimo privilegio para el role está en `lambda/execution-role-policy.json`. La prueba proxy está en `lambda/test-event.json`. API Gateway expone `POST /contact` en el stage `dev`; su URL está configurada en `js/app.js`. La Lambda responde a `OPTIONS` para CORS.
 
 ## Desarrollo local
 
-Abre `index.html` en un navegador. Hasta configurar y desplegar la API propia, el formulario validará los datos y avisará claramente que no los ha enviado.
+Abre `index.html` en un navegador. El formulario validará los datos y enviará las consultas a la API propia.

@@ -1,5 +1,6 @@
-// Configure this with the independent API Gateway endpoint for this project.
-const API_CONFIG = { contactEndpoint: '' };
+const API_CONFIG = {
+  contactEndpoint: 'https://eettby2lie.execute-api.us-east-1.amazonaws.com/dev/contact'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const selectedVehicleLabel = document.getElementById('selected-vehicle-label');
