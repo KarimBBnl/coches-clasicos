@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang='es'>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name='description' content='Car Classic San Valero: colección y exposición de coches clásicos.'>
+    <title>Car Classic San Valero</title>
+    <style>
+      :root {
+        --ivory: #f5efe6;
+        --ivory-strong: #e7dcc7;
+        --forest: #1a2a27;
+        --forest-soft: #2b3c38;
+        --petrol: #101b1a;
+        --gold: #b98f4d;
+        --gold-soft: #d2b57e;
+        --rust: #7f3b2d;
+        --ink: #1b1b1b;
+        --muted: #5e5b56;
+        --paper: #f7f3ee;
+        --line: rgba(20, 30, 28, 0.14);
+        --shadow: rgba(14, 18, 17, 0.15);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after { animation: none !important; transition: none !important; }
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+      }
+
+      img { max-width: 100%; display: block; }
+      a { color: inherit; text-decoration: none; }
+      button, input, textarea { font: inherit; }
+
+      .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+        clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+      }
+
+      .page-shell {
+        background: linear-gradient(180deg, rgba(245,239,230,0.96), rgba(245,239,230,0.96)),
+          repeating-linear-gradient(90deg, transparent 0, transparent 24px, rgba(26,42,39,0.02) 24px, rgba(26,42,39,0.02) 25px);
+      }
+
+      .container { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; }
+
+      .topbar {
+        position: sticky; top: 0; z-index: 20;
+        backdrop-filter: blur(10px);
+        background: rgba(245, 239, 230, 0.82);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-wrap {
+        display: flex; align-items: center; justify-content: space-between; min-height: 78px; gap: 1rem;
+      }
+
+      .brand {
+        display: inline-flex; align-items: center; gap: 0.8rem; font-weight: 700;
+        letter-spacing: 0.09em; text-transform: uppercase; color: var(--forest);
+      }
+
+      .brand-mark {
+        width: 42px; height: 42px; object-fit: contain; border-radius: 12px;
+        box-shadow: 0 14px 24px rgba(26,42,39,0.12);
+      }
+
+      .brand-word { font-size: 0.78rem; }
+
+      .nav-links {
+        display: flex; align-items: center; gap: 1.6rem; list-style: none; padding: 0; margin: 0;
+      }
+
+      .nav-links a {
+        position: relative; font-size: 0.83rem; letter-spacing: 0.06em; text-transform: uppercase;
+        color: var(--muted); padding: 0.35rem 0;
+      }
+
+      .nav-links a::after {
+        content: ''; position: absolute; left: 0; bottom: -0.15rem; width: 100%; height: 1px; background: var(--gold);
+        transform: scaleX(0); transform-origin: left; transition: transform 0.2s ease;
+      }
+
+      .nav-links a:hover::after, .nav-links a:focus-visible::after { transform: scaleX(1); }
+
+      .nav-cta {
+        display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--forest);
+        background: var(--forest); color: var(--ivory); padding: 0.8rem 1.25rem; text-transform: uppercase;
+        letter-spacing: 0.08em; font-size: 0.73rem; font-weight: 600; transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .nav-cta:hover, .nav-cta:focus-visible { transform: translateY(-1px); background: var(--forest-soft); }
+
+      .hero {
+        position: relative; overflow: hidden; padding: 4.5rem 0 3.5rem;
+      }
+
+      .hero::before {
+        content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(245,239,230,0.94), rgba(245,239,230,0.35));
+      }
+
+      .hero-inner {
+        position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr 0.95fr; align-items: center;
+        min-height: 680px; gap: clamp(2rem, 5vw, 4rem);
+      }
+
+      .eyebrow {
+        margin: 0 0 1rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.72rem; font-weight: 700;
+      }
+
+      h1, h2, h3 {
+        margin: 0; font-family: Georgia, 'Times New Roman', serif; font-weight: 700; line-height: 0.94;
+        letter-spacing: -0.04em; color: var(--forest);
+      }
+
+      .hero-title { font-size: clamp(3.2rem, 7vw, 7rem); max-width: 640px; }
+
+      .hero-copy {
+        max-width: 34rem; margin-top: 1.2rem; font-size: 1.12rem; color: var(--muted);
+      }
+
+      .hero-actions {
+        display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem;
+      }
+
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 52px;
+        border: 1px solid transparent; padding: 0.9rem 1.4rem; text-decoration: none; text-transform: uppercase;
+        letter-spacing: 0.08em; font-weight: 700; font-size: 0.73rem; transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease; cursor: pointer;
+      }
+
+      .btn-primary { background: var(--forest); color: var(--ivory); box-shadow: 0 18px 30px rgba(26,42,39,0.16); }
+      .btn-secondary { border-color: rgba(26,42,39,0.26); background: transparent; color: var(--forest); }
+      .btn:hover, .btn:focus-visible { transform: translateY(-1px); }
+
+      .trust-bar {
+        display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 2.3rem; color: var(--muted);
+        font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase;
+      }
+
+      .trust-badge { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--forest); }
+      .hero-visual { position: relative; }
+      .hero-card { position: relative; padding: 1rem; background: rgba(255,255,255,0.18); border: 1px solid rgba(26,42,39,0.14); box-shadow: 0 32px 60px rgba(27, 28, 26, 0.12); }
+      .hero-card img { width: 100%; height: min(72vw, 680px); object-fit: cover; background: #d9d0c4; }
+
+      .photo-tag {
+        position: absolute; left: 2rem; bottom: 2rem; display: inline-flex; align-items: center; gap: 0.6rem;
+        background: rgba(17, 24, 22, 0.78); color: var(--ivory); padding: 0.8rem 1.1rem; letter-spacing: 0.08em;
+        text-transform: uppercase; font-size: 0.67rem;
+      }
+      .photo-tag strong { font-size: 0.9rem; letter-spacing: 0.02em; text-transform: none; }
+
+      section { padding: 4.5rem 0; }
+      .section-header { margin-bottom: 2.3rem; }
+      .section-header .eyebrow { margin-bottom: 0.8rem; }
+      .section-header h2 { font-size: clamp(2.4rem, 5vw, 4rem); }
+
+      .collection-grid {
+        display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(0, 1fr);
+        grid-template-rows: repeat(3, minmax(14.375rem, auto)); gap: 1.1rem;
+      }
+
+      .car-card {
+        background: rgba(255,255,255,0.45); border: 1px solid var(--line); box-shadow: 0 20px 28px rgba(19, 22, 20, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .car-card:hover, .car-card:focus-within { transform: translateY(-4px); box-shadow: 0 26px 32px rgba(19, 22, 20, 0.1); }
+
+      .car-image { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+      .car-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+      .car-card:hover .car-image img { transform: scale(1.04); }
+
+      .car-meta { padding: 1.2rem 1.2rem 1.4rem; }
+      .car-kicker {
+        display: inline-block; margin-bottom: 0.7rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase;
+        font-size: 0.66rem; font-weight: 700;
+      }
+      .car-meta h3 { font-size: clamp(1.7rem, 2vw, 2.2rem); }
+      .car-details {
+        display: flex; flex-wrap: wrap; gap: 0.7rem 1rem; margin-top: 0.9rem; color: var(--muted);
+        font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+      }
+      .car-description { margin: 0.9rem 0 1.3rem; color: var(--muted); }
+      .car-action {
+        border: 1px solid rgba(26,42,39,0.25); background: transparent; color: var(--forest); width: 100%; justify-content: center;
+      }
+
+      .collection-heading {
+        display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.3rem;
+      }
+      .collection-heading .section-header { margin: 0; }
+      .collection-heading h2 { max-width: 780px; }
+      .collection-note {
+        max-width: 220px; margin: 0 0 0.2rem; padding-left: 1rem; border-left: 1px solid var(--gold);
+        color: var(--muted); font-family: Georgia, 'Times New Roman', serif; font-size: 0.98rem; font-style: italic;
+      }
+      .collection-note strong {
+        display: block; margin-bottom: 0.3rem; color: var(--gold); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.68rem; font-style: normal; letter-spacing: 0.12em; text-transform: uppercase;
+      }
+      .car-card:first-child {
+        grid-column: 1; grid-row: 1 / span 3; display: flex; flex-direction: column; background: #eee5d6;
+      }
+      .car-card:first-child .car-image { flex: 1 1 56%; min-height: 340px; aspect-ratio: auto; }
+      .car-card:first-child .car-meta { padding: clamp(1.3rem, 2.4vw, 2.3rem); }
+      .car-card:not(:first-child) {
+        grid-column: 2; display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr); min-height: 230px;
+      }
+      .car-card:not(:first-child) .car-image { min-height: 100%; aspect-ratio: auto; }
+      .car-card:not(:first-child) .car-meta { padding: 1rem 1.1rem; }
+      .car-card:not(:first-child) .car-kicker { margin-bottom: 0.45rem; }
+      .car-card:not(:first-child) .car-meta h3 { font-size: clamp(1.4rem, 1.8vw, 1.8rem); }
+      .car-card:not(:first-child) .car-details { gap: 0.4rem 0.7rem; margin-top: 0.65rem; font-size: 0.7rem; }
+      .car-card:not(:first-child) .car-description { margin: 0.65rem 0 0.8rem; font-size: 0.88rem; }
+      .car-card:not(:first-child) .car-action { min-height: 44px; padding: 0.65rem 0.7rem; font-size: 0.64rem; }
+
+      .about-block {
+        display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2rem; align-items: center;
+      }
+
+      #exposicion { background: #eee5d6; border-block: 1px solid rgba(20,30,28,0.09); }
+      #exposicion .about-block { align-items: stretch; }
+      #historia .section-header { padding-left: 1.2rem; border-left: 1px solid var(--gold); }
+      .history-copy { max-width: 700px; margin-left: auto; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+      .about-copy { font-size: 1.04rem; color: var(--muted); }
+      .about-copy p { margin: 0 0 1rem; }
+
+      .about-aside {
+        background: var(--forest); color: var(--ivory); padding: clamp(1.5rem, 3vw, 2rem); min-height: 430px;
+        display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 28px 42px rgba(15, 21, 19, 0.12);
+      }
+      .aside-label { color: var(--gold-soft); letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.72rem; }
+      .about-aside h3 { color: var(--ivory); font-size: clamp(2.2rem, 4vw, 3rem); margin-top: 0.8rem; }
+
+      .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+      .facts li {
+        display: grid; grid-template-columns: auto 1fr; gap: 0.9rem; align-items: start; padding-top: 0.9rem; border-top: 1px solid rgba(247,243,238,0.14);
+      }
+      .facts strong {
+        display: block; color: var(--gold-soft); font-size: 1.35rem; line-height: 1;
+      }
+      .facts span { color: rgba(245,239,230,0.8); font-size: 0.9rem; }
+
+      .inquiry-panel {
+        display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 2rem; background: rgba(255,255,255,0.5);
+        border: 1px solid var(--line); box-shadow: 0 18px 28px rgba(16, 25, 24, 0.06);
+      }
+      .inquiry-intro { padding: clamp(1.5rem, 3vw, 2.2rem); background: linear-gradient(180deg, rgba(26,42,39,0.96), rgba(17,27,26,0.96)); color: var(--ivory); }
+      .inquiry-intro h3 { color: var(--ivory); font-size: clamp(2.2rem, 4vw, 3.2rem); margin-top: 0.8rem; }
+      .inquiry-intro p { margin-top: 1rem; color: rgba(245,239,230,0.8); }
+      .vehicle-pill {
+        display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1rem; padding: 0.65rem 0.9rem;
+        border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); text-transform: uppercase;
+        letter-spacing: 0.08em; font-size: 0.68rem; color: var(--ivory);
+      }
+      .vehicle-pill strong { color: var(--gold-soft); }
+
+      .form-wrap { padding: clamp(1.5rem, 3vw, 2.2rem); }
+      form { display: grid; gap: 1rem; }
+      .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+      .field { display: grid; gap: 0.45rem; }
+      label {
+        color: var(--forest); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      }
+      input, textarea {
+        width: 100%; border: 1px solid rgba(26,42,39,0.18); background: rgba(255,255,255,0.5); color: var(--ink);
+        padding: 0.9rem 1rem; transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+      textarea { resize: vertical; min-height: 140px; }
+      input:focus, textarea:focus {
+        outline: none; border-color: rgba(185,143,77,0.9); box-shadow: 0 0 0 4px rgba(185,143,77,0.14);
+      }
+      .error-message, .status-message { min-height: 1.4em; font-size: 0.92rem; }
+      .error-message { color: var(--rust); }
+      .status-message { color: var(--forest); }
+      .status-message.is-success { color: #2d5a45; }
+      .status-message.is-error { color: var(--rust); }
+      .status-message.is-warning { color: #7a5a14; }
+      .form-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+      .form-note { color: var(--muted); font-size: 0.8rem; }
+
+      footer { padding: 2rem 0 3rem; border-top: 1px solid var(--line); }
+      .foot-wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+      .footer-brand { display: inline-flex; align-items: center; gap: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+      .footer-links {
+        display: flex; flex-wrap: wrap; gap: 1.2rem; list-style: none; padding: 0; margin: 0; color: var(--muted);
+      }
+
+      @media (max-width: 900px) and (min-width: 761px) {
+        .nav-wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.35rem 1rem; padding: 0.65rem 0; }
+        .brand { grid-column: 1; grid-row: 1; }
+        .brand-word { font-size: 0.72rem; letter-spacing: 0.07em; }
+        .nav-wrap nav { grid-column: 1 / -1; grid-row: 2; }
+        .nav-links { justify-content: flex-start; gap: clamp(1rem, 3vw, 2rem); }
+        .nav-cta { grid-column: 2; grid-row: 1; padding: 0.65rem 0.95rem; white-space: nowrap; }
+      }
+
+      @media (max-width: 980px) {
+        .hero-inner, .about-block, .inquiry-panel { grid-template-columns: 1fr; }
+        .hero-card img { height: min(100vw, 620px); }
+        .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
+        .car-card:first-child { grid-column: 1 / -1; grid-row: auto; display: grid; grid-template-columns: 1fr 1fr; }
+        .car-card:first-child .car-image { min-height: 100%; aspect-ratio: auto; }
+        .car-card:not(:first-child) { grid-column: auto; display: block; }
+        .car-card:not(:first-child) .car-image { aspect-ratio: 4 / 3; }
+        .collection-heading { align-items: start; }
+      }
+
+      @media (max-width: 760px) {
+        .nav-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; padding: 0.8rem 0; }
+        .nav-wrap nav { grid-column: 1; grid-row: 2; min-width: 0; }
+        .nav-links { width: 100%; justify-content: space-between; gap: 0.65rem; overflow-x: auto; padding-bottom: 0.25rem; }
+        .nav-links a { font-size: 0.72rem; }
+        .nav-cta { display: none; }
+        .field-grid, .collection-grid { grid-template-columns: 1fr; }
+        .car-card:first-child { grid-column: 1; grid-template-columns: 1fr; }
+        .car-card:first-child .car-image { min-height: 0; aspect-ratio: 4 / 3; }
+        .collection-heading { display: block; }
+        .collection-note { max-width: none; margin-top: 1.2rem; }
+        .hero { padding-top: 2.8rem; }
+        .hero-inner { min-height: auto; }
+        .hero-card img { height: 420px; }
+        .photo-tag { left: 1rem; right: 1rem; bottom: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class='page-shell'>
+      <header class='topbar'>
+        <div class='container nav-wrap'>
+          <a href='#inicio' class='brand' aria-label='Car Classic San Valero inicio'>
+            <img src='assets/brand-mark.png' alt='Marca de Car Classic San Valero' class='brand-mark'>
+            <span class='brand-word'>Car Classic San Valero</span>
+          </a>
+          <nav aria-label='Navegación principal'>
+            <ul class='nav-links'>
+              <li><a href='#coleccion'>Colección</a></li>
+              <li><a href='#exposicion'>Exposición</a></li>
+              <li><a href='#historia'>Historia</a></li>
+              <li><a href='#contacto'>Contacto</a></li>
+            </ul>
+          </nav>
+          <a href='#contacto' class='nav-cta'>Reservar visita</a>
+        </div>
+      </header>
+
+      <main id='inicio'>
+        <section class='hero'>
+          <div class='container hero-inner'>
+            <div>
+              <p class='eyebrow'>Colección privada / edición limitada</p>
+              <h1 class='hero-title'>Descubre la herencia que aún se siente al volante.</h1>
+              <p class='hero-copy'>En Car Classic San Valero reunimos vehículos de época con historia, presencia y personalidad. Una exhibición pensada para quienes aman los coches que dejaron huella en la carretera.</p>
+              <div class='hero-actions'>
+                <a href='#coleccion' class='btn btn-primary'>Ver colección</a>
+                <a href='#contacto' class='btn btn-secondary'>Visita y contacto</a>
+              </div>
+              <div class='trust-bar' aria-label='Indicadores de la colección'>
+                <span class='trust-badge'><strong>04</strong> modelos emblemáticos</span>
+                <span class='trust-badge'><strong>+50</strong> años de historia</span>
+                <span class='trust-badge'><strong>1</strong> colección cuidada</span>
+              </div>
+            </div>
+
+            <div class='hero-visual' aria-label='Imágenes de la colección'>
+              <div class='hero-card'>
+                <img src='assets/hero-classic.jpg' alt='Mercedes-Benz 300 SL ilustrado en la sala de exposición de San Valero'>
+                  <div class='photo-tag'><span>Pieza invitada</span><strong>Mercedes-Benz 300 SL · 1955</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id='coleccion'>
+          <div class='container'>
+            <div class='collection-heading'>
+              <div class='section-header'>
+                <p class='eyebrow'>Colección / inventario 01—04</p>
+                <h2>Un pequeño museo de siluetas y motores emocionales.</h2>
+              </div>
+              <p class='collection-note'><strong>Cuatro piezas, una época</strong>Europa al volante, de los años cincuenta al primer 911.</p>
+            </div>
+            <div class='collection-grid'>
+              <article class='car-card' aria-label='Alfa Romeo 1900 Sprint del año 1953'>
+                <div class='car-image'><img src='assets/car-alfa.jpg' alt='Alfa Romeo 1900 Sprint de 1953 en tonos rojos y tierra'></div>
+                <div class='car-meta'>
+                  <span class='car-kicker'>01 / Italia · pieza destacada</span>
+                  <h3>Alfa Romeo 1900 Sprint</h3>
+                  <div class='car-details'><span>1953</span><span>2 puertas</span><span>Vanguardia</span></div>
+                  <p class='car-description'>Un coupé de líneas elegantes, fabricado con la sobriedad de los clásicos europeos y la presencia de un gran coupe de carretera.</p>
+                  <button class='btn car-action' data-vehicle='Alfa Romeo 1900 Sprint (1953)'>Consultar este vehículo</button>
+                </div>
+              </article>
+
+              <article class='car-card' aria-label='Peugeot 403 Cabriolet del año 1958'>
+                <div class='car-image'><img src='assets/car-peugeot.jpg' alt='Peugeot 403 Cabriolet de 1958 con acabado verde oscuro y brillo metálico'></div>
+                <div class='car-meta'>
+                  <span class='car-kicker'>02 / Francia</span>
+                  <h3>Peugeot 403 Cabriolet</h3>
+                  <div class='car-details'><span>1958</span><span>Descapotable</span><span>Elegancia</span></div>
+                  <p class='car-description'>Atractivo de carretera con proporciones equilibradas y un estilo de viaje refinado, ideal para una tarde de sol.</p>
+                  <button class='btn car-action' data-vehicle='Peugeot 403 Cabriolet (1958)'>Consultar este vehículo</button>
+                </div>
+              </article>
+
+              <article class='car-card' aria-label='Mercedes-Benz 300 SL del año 1955'>
+                <div class='car-image'><img src='assets/car-mercedes.jpg' alt='Mercedes-Benz 300 SL de 1955 con acabado marrón oscuro y líneas deportivas'></div>
+                <div class='car-meta'>
+                  <span class='car-kicker'>03 / Alemania</span>
+                  <h3>Mercedes 300 SL</h3>
+                  <div class='car-details'><span>1955</span><span>Sport</span><span>Icono</span></div>
+                  <p class='car-description'>Símbolo de ingeniería de competición convertido en pieza de colección, con la presencia que define un clásico de referencia.</p>
+                  <button class='btn car-action' data-vehicle='Mercedes-Benz 300 SL (1955)'>Consultar este vehículo</button>
+                </div>
+              </article>
+
+              <article class='car-card' aria-label='Porsche 911 de 1964'>
+                <div class='car-image'><img src='assets/car-porsche.jpg' alt='Porsche 911 de 1964 en tonos gris azulado con líneas sobrias'></div>
+                <div class='car-meta'>
+                  <span class='car-kicker'>04 / Alemania</span>
+                  <h3>Porsche 911</h3>
+                  <div class='car-details'><span>1964</span><span>Coupe</span><span>Rendimiento</span></div>
+                  <p class='car-description'>La proporción perfecta: compacta, directa y aún capaz de hervir la emoción de un motor rear-engine clásico.</p>
+                  <button class='btn car-action' data-vehicle='Porsche 911 (1964)'>Consultar este vehículo</button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id='exposicion'>
+          <div class='container about-block'>
+            <div class='about-copy'>
+              <div class='section-header' style='margin-bottom: 1.2rem;'>
+                <p class='eyebrow'>Exposición</p>
+                <h2>Un refugio para los coches que aún cuentan historias de carretera.</h2>
+              </div>
+              <p>Car Classic San Valero nació como un proyecto de valoración y admiración por las piezas que transformaron la forma de viajar: coches con proporciones claras, materiales honestos y una personalidad que se percibe a la primera mirada.</p>
+              <p>La colección se presenta como una visita íntima, cercana y didáctica. No es un salón comercial ni un catálogo de ventas; es una mirada pausada a la ingeniería, el diseño y la memoria del automovilismo clásico.</p>
+              <p>La intención es invitar a visitantes, coleccionistas y aficionados a detenerse, observar cada detalle y plantear preguntas sobre cada vehículo, su origen y su contexto.</p>
+            </div>
+
+            <aside class='about-aside' aria-label='Datos del proyecto'>
+              <div>
+                <span class='aside-label'>Colección</span>
+                <h3>Herencia viva.</h3>
+              </div>
+              <ul class='facts'>
+                <li><strong>01</strong><span>Modelos seleccionados por su historia, estética y valor patrimonial.</span></li>
+                <li><strong>02</strong><span>Contexto curatorial para entender su legado y su presencia en la carretera.</span></li>
+                <li><strong>03</strong><span>Encuentro con aficionados que buscan piezas de carácter y emoción.</span></li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section id='historia'>
+          <div class='container'>
+            <div class='section-header'>
+              <p class='eyebrow'>Historia</p>
+              <h2>La colección como memoria del automóvil.</h2>
+            </div>
+            <div class='about-copy history-copy'>
+              <p>San Valero no es solo una marca ni un nombre de lugar. Es un criterio: una colección concebida para preservar la belleza de los vehículos que fueron capaces de dejar huella en la vida cotidiana. Están aquí coches que marcaron una época, un estilo de vida y una forma de entender la velocidad con calma.</p>
+              <p>Cada modelo y cada detalle explica una fase del diseño automovilístico: la elegancia de los años 50, la precisión germánica, la pasión italiana y la claridad funcional de la era dorada del motor.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id='contacto'>
+          <div class='container inquiry-panel'>
+            <div class='inquiry-intro'>
+              <p class='eyebrow'>Contacto</p>
+              <h3>Solicita información sobre un vehículo.</h3>
+              <p>Si quieres saber más sobre una pieza, concertar una visita o pedir información detallada, deja tus datos y te responderemos con la información disponible.</p>
+              <div class='vehicle-pill' aria-live='polite'><span>Vehículo:</span><strong id='selected-vehicle-label'>Sin selección</strong></div>
+            </div>
+
+            <div class='form-wrap'>
+              <form id='vehicle-inquiry-form'>
+                <div class='field-grid'>
+                  <div class='field'>
+                    <label for='name'>Nombre</label>
+                    <input id='name' name='name' type='text' autocomplete='name' aria-describedby='form-error' required>
+                  </div>
+                  <div class='field'>
+                    <label for='email'>Correo electrónico</label>
+                    <input id='email' name='email' type='email' autocomplete='email' aria-describedby='form-error' required>
+                  </div>
+                </div>
+                <div class='field'>
+                  <label for='phone'>Teléfono (opcional)</label>
+                  <input id='phone' name='phone' type='tel' autocomplete='tel' placeholder='Ej. +34 600 000 000'>
+                </div>
+                <div class='field'>
+                  <label for='message'>Consulta</label>
+                  <textarea id='message' name='message' placeholder='Escribe la información que te gustaría recibir...' aria-describedby='form-error' required></textarea>
+                </div>
+                <div class='error-message' id='form-error' aria-live='polite'></div>
+                <div class='status-message' id='form-status' aria-live='polite'></div>
+                <div class='form-actions'>
+                  <button type='submit' class='btn btn-primary'>Enviar consulta</button>
+                  <span class='form-note'>La configuración del backend se completará en una futura fase de API.</span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div class='container foot-wrap'>
+          <div class='footer-brand'>
+            <img src='assets/brand-mark.png' alt='Marca Car Classic San Valero' style='width: 32px; height: 32px;'>
+            <span>Car Classic San Valero</span>
+          </div>
+          <ul class='footer-links' aria-label='Enlaces del pie de página'>
+            <li><a href='#coleccion'>Colección</a></li>
+            <li><a href='#exposicion'>Exposición</a></li>
+            <li><a href='#historia'>Historia</a></li>
+            <li><a href='#contacto'>Contacto</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+    <script src='js/app.js'></script>
+  </body>
+</html>
