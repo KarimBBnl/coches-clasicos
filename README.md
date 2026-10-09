@@ -7,7 +7,6 @@ Proyecto final Serverless para presentar una exposición de coches clásicos y r
 - Sitio estático inicial en `index.html`, con JavaScript en `js/app.js` e imágenes locales en `assets/`.
 - El formulario requiere `name`, `email` y `message`; permite `phone` opcional y adjunta el vehículo seleccionado.
 - El formulario envía consultas a la API Gateway propia desplegada en `us-east-1`.
-- No utilizar los recursos AWS del proyecto Ebook.
 
 ## Arquitectura
 
@@ -29,3 +28,8 @@ El Execution Role de Lambda necesita `dynamodb:PutItem` en esa tabla y `sns:Publ
 ## Desarrollo local
 
 Abre `index.html` en un navegador. El formulario validará los datos y enviará las consultas a la API propia.
+
+
+## Resultado final
+
+Una vez rellenado el cuestionario tanto el de GitHub Pages tanto como el de la S3, llega una notificación a mi correo mediante SNS
